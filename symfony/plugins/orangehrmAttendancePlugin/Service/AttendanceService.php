@@ -357,6 +357,7 @@ class AttendanceService {
     }
 
     /**
+     *
      * @return bool
      */
     public function canSupervisorModifyAttendanceConfiguration(): bool
