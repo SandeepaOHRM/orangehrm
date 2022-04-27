@@ -301,39 +301,50 @@ class AppSetupUtility
     public function insertInstanceIdentifierAndChecksum(): void
     {
         $instanceIdentifierData = StateContainer::getInstance()->getInstanceIdentifierData();
-
-        $this->getConfigHelper()->setConfigValue(
-            SystemConfiguration::INSTANCE_IDENTIFIER,
-            $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER]
-        );
-        $this->getConfigHelper()->setConfigValue(
-            SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
-            $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER_CHECKSUM]
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getInstanceIdentifier(): string
-    {
-        return $this->getSystemConfiguration()
-            ->createInstanceIdentifier(...$this->getInstanceIdentifierData());
-    }
-
-    /**
-     * @return string
-     */
-    public function getInstanceIdentifierChecksum(): string
-    {
-        return $this->getSystemConfiguration()
-            ->createInstanceIdentifierChecksum(...$this->getInstanceIdentifierData());
+        if ($instanceIdentifierData) {
+            $this->getConfigHelper()->setConfigValue(
+                SystemConfiguration::INSTANCE_IDENTIFIER,
+                $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER]
+            );
+            $this->getConfigHelper()->setConfigValue(
+                SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
+                $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER_CHECKSUM]
+            );
+        } else {
+            list(
+                $instanceIdentifier,
+                $instanceIdentifierChecksum
+                ) = $this->getInstanceUniqueIdentifyingData();
+            $this->getConfigHelper()->setConfigValue(SystemConfiguration::INSTANCE_IDENTIFIER, $instanceIdentifier);
+            $this->getConfigHelper()->setConfigValue(
+                SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
+                $instanceIdentifierChecksum
+            );
+        }
     }
 
     /**
      * @return array
      */
-    private function getInstanceIdentifierData(): array
+    public function getInstanceUniqueIdentifyingData(): array
+    {
+        $instanceIdentifierData = $this->getInstanceIdentifierData();
+
+        $instanceIdentifier = $this->getSystemConfiguration()
+            ->createInstanceIdentifier(...$instanceIdentifierData);
+        $instanceIdentifierChecksum = $this->getSystemConfiguration()
+            ->createInstanceIdentifierChecksum(...$instanceIdentifierData);
+
+        return [
+            $instanceIdentifier,
+            $instanceIdentifierChecksum
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getInstanceIdentifierData(): array
     {
         $adminUserData = StateContainer::getInstance()->getAdminUserData();
         $instanceData = StateContainer::getInstance()->getInstanceData();
