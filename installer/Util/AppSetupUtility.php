@@ -300,27 +300,38 @@ class AppSetupUtility
 
     public function insertInstanceIdentifierAndChecksum(): void
     {
-        $instanceIdentifierData = StateContainer::getInstance()->getInstanceIdentifierData();
-        if ($instanceIdentifierData) {
-            $this->getConfigHelper()->setConfigValue(
-                SystemConfiguration::INSTANCE_IDENTIFIER,
-                $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER]
-            );
-            $this->getConfigHelper()->setConfigValue(
-                SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
-                $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER_CHECKSUM]
-            );
-        } else {
-            list(
-                $instanceIdentifier,
-                $instanceIdentifierChecksum
-                ) = $this->getInstanceUniqueIdentifyingData();
-            $this->getConfigHelper()->setConfigValue(SystemConfiguration::INSTANCE_IDENTIFIER, $instanceIdentifier);
-            $this->getConfigHelper()->setConfigValue(
-                SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
-                $instanceIdentifierChecksum
-            );
-        }
+//        $instanceIdentifierData = StateContainer::getInstance()->getInstanceIdentifierData();
+//        if ($instanceIdentifierData) {
+//            dump('obviously called this');
+//            $this->getConfigHelper()->setConfigValue(
+//                SystemConfiguration::INSTANCE_IDENTIFIER,
+//                $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER]
+//            );
+//            $this->getConfigHelper()->setConfigValue(
+//                SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
+//                $instanceIdentifierData[StateContainer::INSTANCE_IDENTIFIER_CHECKSUM]
+//            );
+//        } else {
+//            list(
+//                $instanceIdentifier,
+//                $instanceIdentifierChecksum
+//                ) = $this->getInstanceUniqueIdentifyingData();
+//            $this->getConfigHelper()->setConfigValue(SystemConfiguration::INSTANCE_IDENTIFIER, $instanceIdentifier);
+//            $this->getConfigHelper()->setConfigValue(
+//                SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
+//                $instanceIdentifierChecksum
+//            );
+//        }
+//        die();
+        list(
+            $instanceIdentifier,
+            $instanceIdentifierChecksum
+            ) = $this->getInstanceUniqueIdentifyingData();
+        $this->getConfigHelper()->setConfigValue(SystemConfiguration::INSTANCE_IDENTIFIER, $instanceIdentifier);
+        $this->getConfigHelper()->setConfigValue(
+            SystemConfiguration::INSTANCE_IDENTIFIER_CHECKSUM,
+            $instanceIdentifierChecksum
+        );
     }
 
     /**
