@@ -360,4 +360,9 @@ final class Services
      * @see \OrangeHRM\Dashboard\Service\ChartService
      */
     public const CHART_SERVICE = 'dashboard.chart_service';
+
+    /**
+     * @see \OrangeHRM\Dashboard\Service\EmployeeTimeAtWorkService
+     */
+    public const EMPLOYEE_TIME_AT_WORK_SERVICE = 'dashboard.employee_time_at_work_service';
 }
